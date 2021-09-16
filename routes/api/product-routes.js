@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
     ]
   }).then(dbProductSingleData => {
     if(!dbProductSingleData) {
-      res.status(400).json({message: 'No product found with that id '});
+      res.status(400).json({message: 'No Product found with that id '});
       return;
     }
     res.json(dbProductSingleData)
@@ -139,6 +139,22 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(dbDeleteData => {
+    if(!dbDeleteData) {
+      res.status(404).json({ message: "No Post with that id found! "});
+      return;
+    } 
+    res.json(dbDeleteData)
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).json(err);
+  })
 });
 
 module.exports = router;
